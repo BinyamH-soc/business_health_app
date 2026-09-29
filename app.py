@@ -22,7 +22,7 @@ df["Revenue per Dollar Expense"] = (
     df["Revenue"] / df["Expenses"]
 )
 
-df["Net Profit Margin"] (
+df["Net Profit Margin"] = (
     df["Net Profit"] / df["Revenue"]
 ) * 100
 
@@ -33,26 +33,26 @@ df["Current Ratio"] = (
 )
 
 df["Debt to Asset Ratio"] = (
-    df["Debt"] / df["TotalAssets"]
+    df["Debt"] / df["Assets"]
 ) * 100
 
 df["Revenue-Expense Growth Differential"] = (
-    df["Revenue Growth (%)"]
-    - df["Expense Growth (%)"]
+    df["Revenue Growth Percentage"]
+    - df["Expense Growth Pecentage"]
 )
 
 #CUSTOMER HEALTH
 
 df["Revenue per Customer"] = (
-    df["Revenue"] / df["Customers"]
+    df["Revenue"] / df["TotalCustomers"]
 )
 
 df["Purchases per Customer"] = (
-    df["Orders"] / df["Customers"]
+    df["Orders/Purchases"] / df["TotalCustomers"]
 )
 
 df["Profit per Customer"] = (
-    df["Net Profit"] / df["Customers"]
+    df["Net Profit"] / df["TotalCustomers"]
 )
 
 #MARKETING EFFICIENCY
@@ -66,23 +66,23 @@ df["Marketing Spend as % of Revenue"] = (
 ) * 100
 
 df["Marketing Spend per Order"] = (
-    df["MarketingSpend"] / df["Orders"]
+    df["MarketingSpend"] / df["Orders/Purchases"]
 )
 
 #OPERATIONAL EFFICIENCY
 
 df["Revenue per Employee"] = (
-    df["Revenue"] / df["Employees"]
+    df["Revenue"] / df["NumberOfEmployees"]
 )
 
 df["Orders per Employee"] = (
-    df["Orders"] / df["Employees"]
+    df["Orders/Purchases"] / df["NumberOfEmployees"]
 )
 
 df["Revenue per Labour Hour"] = (
     df["Revenue"] / df["LabourHours"]
 )
 
-
+df = df.round(2)
 
 print(df)

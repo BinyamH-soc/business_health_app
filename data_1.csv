@@ -1,4 +1,4 @@
-Month,Revenue,Expenses,Assets,Liabilities,Debt,Total Customers,Marketing Spend,Number of Employees,Orders/Purchases,Labour Hours,Current Assets,Current Liabilities
+Month,Revenue,Expenses,Assets,Liabilities,Debt,TotalCustomers,MarketingSpend,NumberOfEmployees,Orders/Purchases,LabourHours,CurrentAssets,CurrentLiabilities
 January,24000,22000,65000,30000,24000,800,500,3,2400,360,15000,12000
 February,25000,22500,65000,29500,23500,820,500,3,2500,370,15500,12000
 March,26000,23000,65500,29000,23000,850,600,3,2600,380,16500,12000
