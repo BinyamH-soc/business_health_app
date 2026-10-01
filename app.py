@@ -85,6 +85,34 @@ df["Revenue per Labour Hour"] = (
 
 df = df.round(2)
 
+def eval_revenue_growth(value):
+    if value > 0:
+        return (
+            "Healthy",
+            f"Revenue increased by {value:.1f}% compared with the previous period."
+        )
+
+    elif value < 0:
+        return (
+            "Needs Improvement",
+            f"Revenue decreased by {abs(value):.1f}% compared with the previous period."
+        )
+
+    else:
+        return (
+            "Stable",
+            "Revenue did not change compared with the previous period."
+        )
+
+
+latest_growth = df["Revenue Growth Percentage"].iloc[-1]
+
+status, reason = eval_revenue_growth(latest_growth)
+
+print("\nREVENUE GROWTH ANALYSIS")
+print("Status:", status)
+print("Reason:", reason)
+
 # Explanations of each metric
 
 metric_explanations = {
@@ -118,7 +146,7 @@ metric_explanations = {
     "Revenue per Marketing Dollar":
         "Shows how total revenue for every $1 spent on marketing.",
 
-    "Marketing Spend as % of Revenue":
+    "Marketing Spend as Percentage of Revenue":
         "Shows how much of revenue is represented by marketing spending.",
 
     "Marketing Spend per Order":
@@ -133,5 +161,3 @@ metric_explanations = {
     "Revenue per Labour Hour":
         "Shows how much revenue is generated for every labour hour."
 }
-
-print(df)
