@@ -4,42 +4,77 @@ df = pd.read_csv("data_1.csv")
 
 # BASE CALCULATIONS
 
-df["Net Profit"] = df["Revenue"] - df["Expenses"]
+df["NetProfit"] = df["Revenue"] - df["Expenses"]
 
+previous_debt = df["Debt"].shift(1)
 previous_revenue = df["Revenue"].shift(1)
+previous_revenuegrowth = df["RevenueGrowth"].shift(1)
 previous_expenses = df["Expenses"].shift(1)
+previous_expensesgrowth = df["ExpensesGrowth"].shift(1)
+previous_profit = df["NetProfit"].shift(1)
 df["Expense Growth Pecentage"] = (
     (df["Expenses"] - previous_expenses) / previous_expenses * 100
 )
 
-# FINANCIAL FROWTH
+# Profitability
 
-df ["Revenue Growth Percentage"] = (
-    (df["Revenue"] - previous_revenue) / previous_revenue * 100
-)
+df["NetProfitMargin"] = (
+    df["NetProfit"] / df["Revenue"]
+) * 100
 
-df["Revenue per Dollar Expense"] = (
+df["RevenuePerDollarExpense"] = (
     df["Revenue"] / df["Expenses"]
 )
 
-df["Net Profit Margin"] = (
-    df["Net Profit"] / df["Revenue"]
-) * 100
+df["NetProfitGrowth"] = (
+    (df["NetProfit"] - previous_profit) / previous_profit * 100
+)
 
-#FINANCIAL HEALTH
+# Growth
 
-df["Current Ratio"] = (
+df ["RevenueGrowth"] = (
+    (df["Revenue"] - previous_revenue) / previous_revenue * 100
+)
+
+df ["ExpenseGrowth"] = (
+    (df["Expenses"] - previous_expenses) / previous_expenses * 100
+)
+
+df ["RevenueExpenseDifferential"] = (
+    df["Growth"] - df["Expenses"]
+)
+
+df["RevenueGrowthAcceleration"] = (
+    df ["RevenueGrowth"] - previous_revenuegrowth
+)
+
+df["ExpenseGrowthAcceleration"] = (
+    df ["ExpenseGrowth"] - previous_revenuegrowth
+)
+
+# Liquidity
+
+df["CurrentRatio"] = (
     df["CurrentAssets"] / df["CurrentLiabilities"]
 )
 
-df["Debt to Asset Ratio"] = (
-    df["Debt"] / df["Assets"]
-) * 100
-
-df["Revenue-Expense Growth Differential"] = (
-    df["Revenue Growth Percentage"]
-    - df["Expense Growth Pecentage"]
+df["WorkingCapital"] = (
+    df["CurrentAssets"] - df["CurrentLiabilities"]
 )
+
+#df["QuickRatio"] = (
+#    df["CurrentAssets"] / df["CurrentLiabilities"]
+#)
+
+# Debt
+
+df["DebtAssetRatio"] = (
+    (df["Debt"] / df["Assets"]) * 100
+) 
+
+df["DebtGrowth"] = (
+    (df["Expenses"] - previous_debt) / previous_debt * 100
+) 
 
 #CUSTOMER HEALTH
 
@@ -52,7 +87,7 @@ df["Purchases per Customer"] = (
 )
 
 df["Profit per Customer"] = (
-    df["Net Profit"] / df["TotalCustomers"]
+    df["NetProfit"] / df["TotalCustomers"]
 )
 
 #MARKETING EFFICIENCY
@@ -85,29 +120,32 @@ df["Revenue per Labour Hour"] = (
 
 df = df.round(2)
 
-def eval_revenue_growth(value):
+# Evaluating revenue growth
+
+def eval_increase_good(value, metric, explanation_good, explanation_bad, explanation_neutral):
+
     if value > 0:
         return (
             "Healthy",
-            f"Revenue increased by {value:.1f}% compared with the previous period."
+            f"{metric} increased by {value:.1f}% compared with the previous period. {explanation_good}"
         )
 
     elif value < 0:
         return (
             "Needs Improvement",
-            f"Revenue decreased by {abs(value):.1f}% compared with the previous period."
+            f"{metric} decreased by {abs(value):.1f}% compared with the previous period. {explanation_bad}"
         )
 
     else:
         return (
             "Stable",
-            "Revenue did not change compared with the previous period."
+            f"{metric} did not change compared with the previous period. {explanation_neutral}"
         )
 
 
 latest_growth = df["Revenue Growth Percentage"].iloc[-1]
 
-status, reason = eval_revenue_growth(latest_growth)
+status, reason = eval_increase_good(latest_growth, "Revenue Growth Percentage", "A value over ")
 
 print("\nREVENUE GROWTH ANALYSIS")
 print("Status:", status)
