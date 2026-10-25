@@ -6,6 +6,8 @@ df = pd.read_csv("data_1.csv")
 
 df["NetProfit"] = df["Revenue"] - df["Expenses"]
 
+revenue_decline = 0.20
+average_monthly_expenses = df["Expenses"].rolling(window=12, min_periods=1).mean()
 previous_debt = df["Debt"].shift(1)
 previous_revenue = df["Revenue"].shift(1)
 previous_revenuegrowth = df["RevenueGrowth"].shift(1)
@@ -21,10 +23,6 @@ df["Expense Growth Pecentage"] = (
 df["NetProfitMargin"] = (
     df["NetProfit"] / df["Revenue"]
 ) * 100
-
-df["RevenuePerDollarExpense"] = (
-    df["Revenue"] / df["Expenses"]
-)
 
 df["NetProfitGrowth"] = (
     (df["NetProfit"] - previous_profit) / previous_profit * 100
@@ -76,46 +74,22 @@ df["DebtGrowth"] = (
     (df["Expenses"] - previous_debt) / previous_debt * 100
 ) 
 
-#CUSTOMER HEALTH
+# Financial Resiliency
 
-df["Revenue per Customer"] = (
-    df["Revenue"] / df["TotalCustomers"]
+df["CashReserveCoverage"] = (
+    df["CashBalance"] /
+    average_monthly_expenses.where(average_monthly_expenses > 0)
 )
 
-df["Purchases per Customer"] = (
-    df["Orders/Purchases"] / df["TotalCustomers"]
+df["Profit Volatility"] = (
+    df["Net Profit"]
+    .rolling(window=12, min_periods=3)
+    .std(ddof=0)
 )
 
-df["Profit per Customer"] = (
-    df["NetProfit"] / df["TotalCustomers"]
-)
-
-#MARKETING EFFICIENCY
-
-df["Revenue per Marketing Dollar"] = (
-    df["Revenue"] / df["MarketingSpend"]
-)
-
-df["Marketing Spend as % of Revenue"] = (
-    df["MarketingSpend"] / df["Revenue"]
-) * 100
-
-df["Marketing Spend per Order"] = (
-    df["MarketingSpend"] / df["Orders/Purchases"]
-)
-
-#OPERATIONAL EFFICIENCY
-
-df["Revenue per Employee"] = (
-    df["Revenue"] / df["NumberOfEmployees"]
-)
-
-df["Orders per Employee"] = (
-    df["Orders/Purchases"] / df["NumberOfEmployees"]
-)
-
-df["Revenue per Labour Hour"] = (
-    df["Revenue"] / df["LabourHours"]
+df["StressTest"] = (
+    df["Revenue"] * (1 - revenue_decline)
+    - df["Expenses"]
 )
 
 df = df.round(2)
