@@ -15,6 +15,10 @@ def calculate_metrics(df):
 
     # Profitability
 
+    df["NetProfit"] = (
+        df["Revenue"] - df["Expenses"]
+    )
+
     df["NetProfitMargin"] = (
         df["NetProfit"] / df["Revenue"]
     ) * 100
@@ -90,16 +94,16 @@ def calculate_metrics(df):
 def indicator_table(df):
 
     indicators = [
-        "NetProfitMargin",
-        "NetProfitGrowth",
-        "RevenueGrowth",
-        "ExpenseGrowth",
-        "CurrentRatio",
-        "WorkingCapital",
-        "DebtAssetRatio",
-        "DebtGrowth",
-        "ProfitVolatility",
-        "StressTest"
+        "Net Profit Margin",
+        "Net Profit Growth",
+        "Revenue Growth",
+        "Expense Growth",
+        "Current Ratio",
+        "Working Capital",
+        "Debt Asset Ratio",
+        "Debt Growth",
+        "Profit Volatility",
+        "Stress Test"
     ]
 
     latest = df.iloc[-1]
@@ -109,18 +113,18 @@ def indicator_table(df):
         "Latest Month": [latest[name] for name in indicators]
     })
 
-    table["PrevMonth"] = [
+    table["Previous Month"] = [
         df[metric].iloc[-2] if len(df) >= 2 else float("nan")
         for metric in indicators
     ]
 
-    table["3Month"] = [
+    table["3 Month Average"] = [
         df[metric].tail(3).mean() if len(df) >= 3
         else float("nan")
         for metric in indicators
     ]
 
-    table["12Month"] = [
+    table["12 Month Average"] = [
         df[metric].tail(12).mean() if len(df) >= 12
         else float("nan")
         for metric in indicators
