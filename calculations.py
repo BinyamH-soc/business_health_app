@@ -94,16 +94,16 @@ def calculate_metrics(df):
 def indicator_table(df):
 
     indicators = [
-        "Net Profit Margin",
-        "Net Profit Growth",
-        "Revenue Growth",
-        "Expense Growth",
-        "Current Ratio",
-        "Working Capital",
-        "Debt Asset Ratio",
-        "Debt Growth",
-        "Profit Volatility",
-        "Stress Test"
+        "NetProfitMargin",
+        "NetProfitGrowth",
+        "RevenueGrowth",
+        "ExpenseGrowth",
+        "CurrentRatio",
+        "WorkingCapital",
+        "DebtAssetRatio",
+        "DebtGrowth",
+        "ProfitVolatility",
+        "StressTest"
     ]
 
     latest = df.iloc[-1]

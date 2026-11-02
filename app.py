@@ -6,7 +6,7 @@ from calculations import calculate_metrics, indicator_table
 st.title("Ledger Labs")
 
 st.subheader(
-    "A catchy slogan here"
+    "Financial Clarity, Made Accessible"
 )
 
 mode = st.radio(
